@@ -127,12 +127,12 @@ int _tmain(int argc, TCHAR* argv[])
 		CDshowCapInfoMgr* mgr = new CDshowCapInfoMgr();
 		mgr->enumAllCapInfo();
 		mgr->printCapDetail();
-		CDShowCapInfo* pInfo = mgr->getVideoInfo(0);	
-		CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_VIDEO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
-		//CDShowCapInfo* pInfo = mgr->getAudioInfo(0);	
-		//CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_AUDIO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
+		//CDShowCapInfo* pInfo = mgr->getVideoInfo(0);	
+		//CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_VIDEO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
+		CDShowCapInfo* pInfo = mgr->getAudioInfo(0);	
+		CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_AUDIO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
 
-		//device->startCap();
+		device->startCap();
 		
 		
 		UserAuthenticationDatabase* authDB = NULL;
