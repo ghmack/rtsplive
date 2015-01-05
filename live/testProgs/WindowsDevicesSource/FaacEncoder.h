@@ -6,7 +6,7 @@ extern "C" {
 };
 using namespace std;
 
-#pragma comment(lib,"libfaac.a")
+
 class FaacEncoder
 {
 public:
