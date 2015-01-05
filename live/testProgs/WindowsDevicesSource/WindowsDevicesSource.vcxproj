@@ -56,7 +56,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>strmbase.lib;avutil.lib;swscale.lib;libx264.a;libgcc.lib;libmingwex.lib;libfaac.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>strmbase.lib;avutil.lib;swscale.lib;libx264.a;libgcc.lib;libmingwex.lib;libfaac.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\dependency\ffswscale\lib;.\dependency\libx264;.\dependency\baseclasses;..\..\debug;.\dependency\libfaac\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>

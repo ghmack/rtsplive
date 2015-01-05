@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-extern "C" {
+
 #include "faac.h"
-};
+
 using namespace std;
 
 
