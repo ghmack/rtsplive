@@ -16,7 +16,7 @@ public:
 public:
 
 
-	virtual bool init(int samplerate, int channel, int bitrate);
+	virtual bool init(int samplerate, int channel, int bitPerSample,int bitrate=100);
 	virtual void fini();
 	virtual bool encode(string &data, string &output);
 		virtual int getFrameSize();
@@ -27,6 +27,7 @@ public:
 public:
 	int m_samplerate;
 	int m_channels;
+	int m_bitPerSample;
 	int m_bitrate;
 	int  m_encoderType;
 

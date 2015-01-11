@@ -16,6 +16,7 @@ extern "C" {;
 #include <assert.h>
 #include <qedit.h>
 
+#include "FaacEncoder.h"
 #include "X264Encoder.h"
 using namespace std;
 
@@ -314,6 +315,7 @@ public:
 public:
 	CDeviceCapture(int iType,wstring wszFriendlyName,AM_MEDIA_TYPE* pAmType)
 	{
+		 m_faacEncoder = NULL;
 		m_iType = iType;
 		m_pAmType = NULL;
 		m_cacheCount = 0;
@@ -324,6 +326,8 @@ public:
 		m_pX264 = new X264Encoder();
 		m_pX264Param = m_pX264->getParamContext();
 		 ::InitializeCriticalSection(&m_lock);
+
+		
 		
 	}
 	~CDeviceCapture()
@@ -400,6 +404,10 @@ private:
 	string m_dataNals;
 	CRITICAL_SECTION m_lock;
 	int m_cacheCount; //»º³åÍ¼Æ¬¸öÊý
+
+	FaacEncoder* m_faacEncoder;
+
+
 };
 
 

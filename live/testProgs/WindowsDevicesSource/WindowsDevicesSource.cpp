@@ -130,7 +130,7 @@ int _tmain(int argc, TCHAR* argv[])
 		//CDShowCapInfo* pInfo = mgr->getVideoInfo(0);	
 		//CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_VIDEO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
 		CDShowCapInfo* pInfo = mgr->getAudioInfo(0);	
-		CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_AUDIO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(0));
+		CDeviceCapture* device = new CDeviceCapture(DEVICE_CAP_AUDIO_TYPE,pInfo->getFriendlyName(),pInfo->getMediaOption(8));
 
 		device->startCap();
 		
