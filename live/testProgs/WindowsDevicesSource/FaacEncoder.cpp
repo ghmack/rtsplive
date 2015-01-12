@@ -14,7 +14,7 @@ FaacEncoder::~FaacEncoder(void)
 }
 
 
-bool FaacEncoder::init(int samplerate, int channel, int bitrate)
+bool FaacEncoder::init(int samplerate, int channel,int bitPerSample, int bitrate)
 {
 	if (channel < 1 || channel > 6)
 		return false;
@@ -22,6 +22,7 @@ bool FaacEncoder::init(int samplerate, int channel, int bitrate)
 	m_samplerate = samplerate;
 	m_channels = channel;
 	m_bitrate = bitrate;
+	m_bitPerSample = bitPerSample;
 
 	faacEncConfigurationPtr aacConfig;
 
@@ -48,7 +49,7 @@ bool FaacEncoder::init(int samplerate, int channel, int bitrate)
 	aacConfig->bitRate = m_bitrate / channel;
 	aacConfig->bandWidth = 0;
 	aacConfig->quantqual = 100;
-	aacConfig->outputFormat = 0;
+	aacConfig->outputFormat = 1; ////输出是否包含ADTS头,flv中设置为0,aac文件中为由adts头播放器不识别
 	aacConfig->inputFormat = FAAC_INPUT_16BIT;
 	aacConfig->shortctl = SHORTCTL_NORMAL;
 
@@ -126,12 +127,12 @@ bool FaacEncoder::encode(string &data, string &outputArray)
 
 int FaacEncoder::getFrameSize()
 {
-	return m_samplesInputSize * 16 / 8;
+	return m_samplesInputSize * m_bitPerSample / 8;
 }
 
 float FaacEncoder::getFrameDuration()
 {
-	return (float)getFrameSize() * 1000.00 / ((float)m_samplerate * 16.0 / 8.0 * 2.0);
+	return (float)getFrameSize() * 1000.00 / ((float)m_samplerate * m_bitPerSample / 8.0 * m_channels);
 }
 
 string FaacEncoder::getHeader()

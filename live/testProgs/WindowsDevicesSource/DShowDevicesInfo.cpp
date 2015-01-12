@@ -307,6 +307,35 @@ bool CDeviceCapture::buildDshowCapGraph(wstring wszFridlyName)
 		ThrowStdExp("Create Interface error");
 	}
 
+	if (audio)
+	{
+		//CComPtr<IID_IAMBufferNegotiation> nego;
+		IAMBufferNegotiation* pNeg = NULL;
+		graphBuilder->FindInterface(&PIN_CATEGORY_CAPTURE,
+			&gType,
+			device, IID_IAMBufferNegotiation, (void **)&pNeg);
+		if(FAILED(hr)){
+			ThrowStdExp("Create Interface error");
+		}
+
+		if (!m_faacEncoder)
+		{
+			WAVEFORMATEX* Info = (WAVEFORMATEX*)m_pAmType->pbFormat;
+			m_faacEncoder = new FaacEncoder();
+			bool bOK = m_faacEncoder->init(Info->nSamplesPerSec,Info->nChannels,Info->wBitsPerSample);
+			if(!bOK)
+				ThrowStdExp("Create Interface error");
+		}
+
+		// Set the buffer size based on selected settings
+		ALLOCATOR_PROPERTIES prop={0};
+		prop.cbBuffer = m_faacEncoder->getFrameSize();
+		prop.cBuffers = -1;
+		prop.cbAlign = -1;
+		hr = pNeg->SuggestAllocatorProperties(&prop);
+		pNeg->Release(); 
+	}
+
 	hr = config->SetFormat(m_pAmType);           //设置input pin的media type ，传null重置pin为默认type
 	if (FAILED(hr)) {
 		int iErr = ::GetLastError();
@@ -407,8 +436,29 @@ STDMETHODIMP CDeviceCapture::BufferCB( double SampleTime, BYTE *pBuffer, long Bu
 	}
 	else
 	{
-		printAmInfo(m_pAmType,false);
-		
+		//printAmInfo(m_pAmType,false);
+		if (m_pAmType->formattype == FORMAT_WaveFormatEx)
+		{
+			WAVEFORMATEX* Info = (WAVEFORMATEX*)m_pAmType->pbFormat;
+			//printf("buffer size: %d channel: %d sample: %d bitrate: %d",BufferLen,Info->nChannels,Info->wBitsPerSample,Info->nSamplesPerSec);
+			if (!hFile)
+			{
+				hFile = fopen("d:\\dshow.aac","wb");
+			}
+
+			string inputAudio,outputAudio;
+			inputAudio.append((char*)pBuffer,BufferLen);
+
+			m_faacEncoder->encode(inputAudio,outputAudio);
+			if(outputAudio.size() > 0)
+			{
+				//fwrite(inputAudio.data(),1,inputAudio.size(),hFile);
+				fwrite(outputAudio.data(),1,outputAudio.size(),hFile);
+				fflush(hFile);
+			}
+			
+		}
+
 	}
 	//printf("\r\n");
 	return S_OK;
